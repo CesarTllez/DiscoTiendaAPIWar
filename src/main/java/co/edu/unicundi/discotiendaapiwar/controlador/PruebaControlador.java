@@ -5,11 +5,13 @@
  */
 package co.edu.unicundi.discotiendaapiwar.controlador;
 
+import co.edu.unicundi.discotiendaejbjar.entidad.Prueba;
 import co.edu.unicundi.discotiendaejbjar.servicio.IPruebaServicio;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
@@ -28,12 +30,12 @@ public class PruebaControlador {
     @EJB
     private IPruebaServicio servicio;
     
-    @GET
+    @POST
     @Path("/obtener")
-    public Response mostrar(){
+    public Response mostrar(Prueba object){
+        this.servicio.mostrar(object);
         return Response
                 .status(Response.Status.OK)
-                .entity(this.servicio.mostrar())
                 .build();
     }
     
