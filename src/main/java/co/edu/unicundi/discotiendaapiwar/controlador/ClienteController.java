@@ -22,8 +22,11 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 /**
- *
- * @author cesar
+ * Clase que proporciona los servicios del cliente.
+ * @author César Rodríguez
+ * @author Eison Morales
+ * @author Juan Páez
+ * @author Diego Cobos
  */
 @Stateless
 @Path("clientes")
