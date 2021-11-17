@@ -5,8 +5,8 @@
  */
 package co.edu.unicundi.discotiendaapiwar.controlador;
 
-import co.edu.unicundi.discotiendaejbjar.entidad.Cliente;
-import co.edu.unicundi.discotiendaejbjar.servicio.IClienteServicio;
+import co.edu.unicundi.discotiendaejbjar.entidad.Rol;
+import co.edu.unicundi.discotiendaejbjar.servicio.IRolServicio;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.validation.Valid;
@@ -22,23 +22,23 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 /**
- * Clase que proporciona los servicios del cliente.
+ * Clase que proporciona los servicios del rol.
  * @author César Rodríguez
  * @author Eison Morales
  * @author Juan Páez
  * @author Diego Cobos
  */
 @Stateless
-@Path("clientes")
+@Path("roles")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-public class ClienteController {
+public class RolControlador {
     
     @EJB
-    private IClienteServicio servicio;
+    private IRolServicio servicio;
     
     /**
-     * Método GET que permite buscar a un cliente por id.
+     * Método GET que permite buscar un rol por id.
      * @param id
      * @return Response
      */
@@ -52,35 +52,7 @@ public class ClienteController {
     }
     
     /**
-     * Método GET que permite buscar a un cliente por cedula.
-     * @param cedula
-     * @return Response
-     */
-    @GET
-    @Path("/buscarPorCedula/{cedula}")
-    public Response buscarPorCedula(@Valid @PathParam("cedula") String cedula){
-        return Response
-                .status(Response.Status.OK)
-                .entity(this.servicio.buscarPorCedula(cedula))
-                .build();
-    }
-    
-    /**
-     * Método GET que permite buscar a un cliente por correo.
-     * @param correo
-     * @return Response
-     */
-    @GET
-    @Path("/buscarPorCorreo/{correo}")
-    public Response buscarPorCorreo(@Valid @PathParam("correo") String correo){
-        return Response
-                .status(Response.Status.OK)
-                .entity(this.servicio.buscarPorCorreo(correo))
-                .build();
-    }
-    
-    /**
-     * Método GET que permite buscar a todos los clientes.
+     * Método GET que permite buscar a todos los roles.
      * @return Response
      */
     @GET
@@ -93,35 +65,35 @@ public class ClienteController {
     }
     
     /**
-     * Método POST que permite registrar a un cliente.
-     * @param cliente
+     * Método POST que permite registrar un rol.
+     * @param rol
      * @return Response
      */
     @POST
     @Path("/registrar")
-    public Response registrar(@Valid Cliente cliente){
-        this.servicio.registrar(cliente);
+    public Response registrar(@Valid Rol rol){
+        this.servicio.registrar(rol);
         return Response
                 .status(Response.Status.CREATED)
                 .build();
     }
     
     /**
-     * Método PUT que permite actualizar a un cliente.
-     * @param cliente
+     * Método PUT que permite actualizar un rol.
+     * @param rol
      * @return Response
      */
     @PUT
     @Path("/actualizar")
-    public Response actualizar(@Valid Cliente cliente){
-        this.servicio.actualizar(cliente);
+    public Response actualizar(@Valid Rol rol){
+        this.servicio.actualizar(rol);
         return Response
                 .status(Response.Status.OK)
                 .build();
     }
     
     /**
-     * Método DELETE que permite eliminar un cliente por JPQL.
+     * Método DELETE que permite eliminar un rol por JPQL.
      * @param id
      * @return Response
      */
@@ -135,7 +107,7 @@ public class ClienteController {
     }
     
     /**
-     * Método DELETE que permite eliminar un cliente por SQL.
+     * Método DELETE que permite eliminar un rol por SQL.
      * @param id
      * @return Response
      */
