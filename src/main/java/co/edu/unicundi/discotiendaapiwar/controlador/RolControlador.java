@@ -34,6 +34,9 @@ import javax.ws.rs.core.Response;
 @Consumes(MediaType.APPLICATION_JSON)
 public class RolControlador {
     
+    /**
+     * Permite la conexión con el EJB para adquirir los servicios.
+     */
     @EJB
     private IRolServicio servicio;
     
