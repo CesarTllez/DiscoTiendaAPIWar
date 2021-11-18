@@ -34,6 +34,9 @@ import javax.ws.rs.core.Response;
 @Consumes(MediaType.APPLICATION_JSON)
 public class ClienteControlador {
     
+    /**
+     * Permite la conexión con el EJB para adquirir los servicios.
+     */
     @EJB
     private IClienteServicio servicio;
     
@@ -121,7 +124,7 @@ public class ClienteControlador {
     }
     
     /**
-     * Método DELETE que permite eliminar un cliente por JPQL.
+     * Método DELETE que permite eliminar a un cliente por JPQL.
      * @param id
      * @return Response
      */
@@ -135,7 +138,7 @@ public class ClienteControlador {
     }
     
     /**
-     * Método DELETE que permite eliminar un cliente por SQL.
+     * Método DELETE que permite eliminar a un cliente por SQL.
      * @param id
      * @return Response
      */

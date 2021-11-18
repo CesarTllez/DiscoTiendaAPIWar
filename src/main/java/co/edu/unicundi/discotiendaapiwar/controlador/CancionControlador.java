@@ -34,7 +34,7 @@ import javax.ws.rs.core.Response;
 @Path("canciones")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-public class CancionController {
+public class CancionControlador {
     
     @EJB
     private ICancionServicio servicio;

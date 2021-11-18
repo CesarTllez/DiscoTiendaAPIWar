@@ -5,8 +5,8 @@
  */
 package co.edu.unicundi.discotiendaapiwar.controlador;
 
-import co.edu.unicundi.discotiendaejbjar.entidad.Rol;
-import co.edu.unicundi.discotiendaejbjar.servicio.IRolServicio;
+import co.edu.unicundi.discotiendaejbjar.entidad.Artista;
+import co.edu.unicundi.discotiendaejbjar.servicio.IArtistaServicio;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.validation.Valid;
@@ -22,26 +22,26 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 /**
- * Clase que proporciona los servicios del rol.
+ * Clase que proporciona los servicios del artista.
  * @author César Rodríguez
  * @author Eison Morales
  * @author Juan Páez
  * @author Diego Cobos
  */
 @Stateless
-@Path("roles")
+@Path("artistas")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-public class RolControlador {
+public class ArtistaControlador {
     
     /**
      * Permite la conexión con el EJB para adquirir los servicios.
      */
     @EJB
-    private IRolServicio servicio;
+    private IArtistaServicio servicio;
     
     /**
-     * Método GET que permite buscar un rol por id.
+     * Método GET que permite buscar a un artista por id.
      * @param id
      * @return Response
      */
@@ -55,7 +55,7 @@ public class RolControlador {
     }
     
     /**
-     * Método GET que permite buscar a todos los roles.
+     * Método GET que permite buscar a todos los artistas.
      * @return Response
      */
     @GET
@@ -68,35 +68,35 @@ public class RolControlador {
     }
     
     /**
-     * Método POST que permite registrar un rol.
-     * @param rol
+     * Método POST que permite registrar a un artista.
+     * @param artista
      * @return Response
      */
     @POST
     @Path("/registrar")
-    public Response registrar(@Valid Rol rol){
-        this.servicio.registrar(rol);
+    public Response registrar(@Valid Artista artista){
+        this.servicio.registrar(artista);
         return Response
                 .status(Response.Status.CREATED)
                 .build();
     }
     
     /**
-     * Método PUT que permite actualizar un rol.
-     * @param rol
+     * Método PUT que permite actualizar a un artista.
+     * @param artista
      * @return Response
      */
     @PUT
     @Path("/actualizar")
-    public Response actualizar(@Valid Rol rol){
-        this.servicio.actualizar(rol);
+    public Response actualizar(@Valid Artista artista){
+        this.servicio.actualizar(artista);
         return Response
                 .status(Response.Status.OK)
                 .build();
     }
     
     /**
-     * Método DELETE que permite eliminar un rol por JPQL.
+     * Método DELETE que permite eliminar a un artista por JPQL.
      * @param id
      * @return Response
      */
@@ -110,7 +110,7 @@ public class RolControlador {
     }
     
     /**
-     * Método DELETE que permite eliminar un rol por SQL.
+     * Método DELETE que permite eliminar a un artista por SQL.
      * @param id
      * @return Response
      */
