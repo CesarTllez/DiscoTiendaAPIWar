@@ -24,7 +24,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 /**
- * Clase que proporciona los servicios del cliente.
+ * Clase que proporciona los servicios de las canciones.
  * @author César Rodríguez
  * @author Eison Morales
  * @author Juan Páez
@@ -36,9 +36,17 @@ import javax.ws.rs.core.Response;
 @Consumes(MediaType.APPLICATION_JSON)
 public class CancionControlador {
     
+    /**
+     * Permite la conexión con el EJB para adquirir los servicios.
+     */
     @EJB
     private ICancionServicio servicio;
-      
+    
+    /**
+     * Método GET que permite buscar una canción por id.
+     * @param id
+     * @return 
+     */
     @GET
     @Path("/buscarPorId/{id}")
     public Response buscarPorId(@Valid @PathParam("id") Integer id){
@@ -48,6 +56,11 @@ public class CancionControlador {
                 .build();
     }
     
+    /**
+     * Método GET que permite buscar una canción por nombre.
+     * @param nombre
+     * @return 
+     */
     @GET
     @Path("/buscarPorNombre/{nombre}")
     public Response buscarPorNombre(@Valid @PathParam("nombre") String nombre){
@@ -57,6 +70,24 @@ public class CancionControlador {
                 .build();
     }
     
+    /**
+     * Método GET que permite buscar todas las canciones por id del disco.
+     * @param idDisco
+     * @return 
+     */
+    @GET
+    @Path("/buscarTodosPorIdDisco/{idDisco}")
+    public Response buscarTodosPorIdDisco(@Valid @PathParam("idDisco") Integer idDisco) {
+        return Response
+                .status(Response.Status.OK)
+                .entity(this.servicio.buscarTodosPorIdDisco(idDisco))
+                .build();
+    }
+    
+    /**
+     * Método GET que permite buscar todas las canciones.
+     * @return 
+     */
     @GET
     @Path("/buscarTodos")
     public Response buscarTodos(){
@@ -66,6 +97,11 @@ public class CancionControlador {
                 .build();
     }
     
+    /**
+     * Método POST que permite registrar una canción.
+     * @param cancion
+     * @return 
+     */
     @POST
     @Path("/registrar")
     public Response registrar(@Valid Cancion cancion){
@@ -75,6 +111,11 @@ public class CancionControlador {
                 .build();
     }
     
+    /**
+     * Método PUT que permite actualizar una canción.
+     * @param cancion
+     * @return 
+     */
     @PUT
     @Path("/actualizar")
     public Response actualizar(@Valid Cancion cancion){
@@ -84,6 +125,11 @@ public class CancionControlador {
                 .build();
     }
     
+    /**
+     * Método DELETE que permite eliminar una canción por JPQL.
+     * @param id
+     * @return 
+     */
     @DELETE
     @Path("/eliminarPorIdJPQL/{id}")
     public Response eliminarPorIdJPQL(@Valid @PathParam("id") Integer id){
@@ -93,6 +139,11 @@ public class CancionControlador {
                 .build();
     }
     
+    /**
+     * Método DELETE que permite eliminar una canción por SQL.
+     * @param id
+     * @return 
+     */
     @DELETE
     @Path("/eliminarPorIdSQL/{id}")
     public Response eliminarPorIdSQL(@Valid @PathParam("id") Integer id){
@@ -101,4 +152,5 @@ public class CancionControlador {
                 .status(Response.Status.NO_CONTENT)
                 .build();
     }
+    
 }

@@ -22,8 +22,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 /**
- * Clase que proporciona los servicios del cliente.
- *
+ * Clase que proporciona los servicios del disco.
  * @author César Rodríguez
  * @author Eison Morales
  * @author Juan Páez
@@ -35,9 +34,17 @@ import javax.ws.rs.core.Response;
 @Consumes(MediaType.APPLICATION_JSON)
 public class DiscoController {
 
+    /**
+     * Permite la conexión con el EJB para adquirir los servicios.
+     */
     @EJB
     private IDiscoServicio servicio;
 
+    /**
+     * Método GET que permite buscar un disco por id.
+     * @param id
+     * @return 
+     */
     @GET
     @Path("/buscarPorId/{id}")
     public Response buscarPorId(@Valid @PathParam("id") Integer id) {
@@ -47,6 +54,11 @@ public class DiscoController {
                 .build();
     }
 
+    /**
+     * Método GET que permite buscar un disco por nombre.
+     * @param nombre
+     * @return 
+     */
     @GET
     @Path("/buscarPorNombre/{nombre}")
     public Response buscarPorNombre(@Valid @PathParam("nombre") String nombre) {
@@ -56,6 +68,10 @@ public class DiscoController {
                 .build();
     }
 
+    /**
+     * Método GET que permite buscar todos los discos.
+     * @return 
+     */
     @GET
     @Path("/buscarTodos")
     public Response buscarTodos() {
@@ -64,7 +80,12 @@ public class DiscoController {
                 .entity(this.servicio.buscarTodo())
                 .build();
     }
-
+ 
+    /**
+     * Método POST que permite registrar un disco.
+     * @param disco
+     * @return 
+     */
     @POST
     @Path("/registrar")
     public Response registrar(@Valid Disco disco) {
@@ -74,6 +95,11 @@ public class DiscoController {
                 .build();
     }
 
+    /**
+     * Método PUT que permite actualizar un disco.
+     * @param disco
+     * @return 
+     */
     @PUT
     @Path("/actualizar")
     public Response actualizar(@Valid Disco disco) {
@@ -83,6 +109,11 @@ public class DiscoController {
                 .build();
     }
 
+    /**
+     * Método DELETE que permite eliminar un disco por JPQL.
+     * @param id
+     * @return 
+     */
     @DELETE
     @Path("/eliminarPorIdJPQL/{id}")
     public Response eliminarPorIdJPQL(@Valid @PathParam("id") Integer id) {
@@ -92,6 +123,11 @@ public class DiscoController {
                 .build();
     }
 
+    /**
+     * Método DELETE que permite eliminar un disco por sQL.
+     * @param id
+     * @return 
+     */
     @DELETE
     @Path("/eliminarPorIdSQL/{id}")
     public Response eliminarPorIdSQL(@Valid @PathParam("id") Integer id) {
