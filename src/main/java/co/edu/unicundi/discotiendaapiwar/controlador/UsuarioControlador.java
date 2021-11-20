@@ -5,8 +5,8 @@
  */
 package co.edu.unicundi.discotiendaapiwar.controlador;
 
-import co.edu.unicundi.discotiendaejbjar.entidad.Administrador;
-import co.edu.unicundi.discotiendaejbjar.servicio.IAdministradorServicio;
+import co.edu.unicundi.discotiendaejbjar.entidad.Usuario;
+import co.edu.unicundi.discotiendaejbjar.servicio.IUsuarioServicio;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.validation.Valid;
@@ -22,23 +22,26 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 /**
- * Clase que proporciona los servicios del administrador.
+ * Clase que proporciona los servicios del usuario.
  * @author César Rodríguez
  * @author Eison Morales
  * @author Juan Páez
  * @author Diego Cobos
  */
 @Stateless
-@Path("administradores")
+@Path("usuarios")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-public class AdministradorControlador {
-    
-    @EJB
-    private IAdministradorServicio servicio;
+public class UsuarioControlador {
     
     /**
-     * Método GET que permite buscar a un administrador por id.
+     * Permite la conexión con el EJB para adquirir los servicios.
+     */
+    @EJB
+    private IUsuarioServicio servicio;
+    
+    /**
+     * Método GET que permite buscar a un usuario por id.
      * @param id
      * @return Response
      */
@@ -52,7 +55,21 @@ public class AdministradorControlador {
     }
     
     /**
-     * Método GET que permite buscar a un administrador por correo.
+     * Método GET que permite buscar a un usuario por cedula.
+     * @param cedula
+     * @return Response
+     */
+    @GET
+    @Path("/buscarPorCedula/{cedula}")
+    public Response buscarPorCedula(@Valid @PathParam("cedula") String cedula){
+        return Response
+                .status(Response.Status.OK)
+                .entity(this.servicio.buscarPorCedula(cedula))
+                .build();
+    }
+    
+    /**
+     * Método GET que permite buscar a un usuario por correo.
      * @param correo
      * @return Response
      */
@@ -66,7 +83,7 @@ public class AdministradorControlador {
     }
     
     /**
-     * Método GET que permite buscar a todos los administradores.
+     * Método GET que permite buscar a todos los usuarios.
      * @return Response
      */
     @GET
@@ -79,35 +96,35 @@ public class AdministradorControlador {
     }
     
     /**
-     * Método POST que permite registrar a un administrador.
-     * @param administrador
+     * Método POST que permite registrar a un usuario.
+     * @param usuario
      * @return Response
      */
     @POST
     @Path("/registrar")
-    public Response registrar(@Valid Administrador administrador){
-        this.servicio.registrar(administrador);
+    public Response registrar(@Valid Usuario usuario){
+        this.servicio.registrar(usuario);
         return Response
                 .status(Response.Status.CREATED)
                 .build();
     }
     
     /**
-     * Método PUT que permite actualizar a un administrador.
-     * @param administrador
+     * Método PUT que permite actualizar a un usuario.
+     * @param usuario
      * @return Response
      */
     @PUT
     @Path("/actualizar")
-    public Response actualizar(@Valid Administrador administrador){
-        this.servicio.actualizar(administrador);
+    public Response actualizar(@Valid Usuario usuario){
+        this.servicio.actualizar(usuario);
         return Response
                 .status(Response.Status.OK)
                 .build();
     }
     
     /**
-     * Método DELETE que permite eliminar a un administrador por JPQL.
+     * Método DELETE que permite eliminar a un usuario por JPQL.
      * @param id
      * @return Response
      */
@@ -121,7 +138,7 @@ public class AdministradorControlador {
     }
     
     /**
-     * Método DELETE que permite eliminar a un administrador por SQL.
+     * Método DELETE que permite eliminar a un usuario por SQL.
      * @param id
      * @return Response
      */
