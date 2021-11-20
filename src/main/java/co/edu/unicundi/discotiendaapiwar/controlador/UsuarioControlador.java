@@ -6,6 +6,10 @@
 package co.edu.unicundi.discotiendaapiwar.controlador;
 
 import co.edu.unicundi.discotiendaejbjar.entidad.Usuario;
+import co.edu.unicundi.discotiendaejbjar.excepciones.BussinessException;
+import co.edu.unicundi.discotiendaejbjar.excepciones.EntityValidationException;
+import co.edu.unicundi.discotiendaejbjar.excepciones.ResourceConflictException;
+import co.edu.unicundi.discotiendaejbjar.excepciones.ResourceNotFoundException;
 import co.edu.unicundi.discotiendaejbjar.servicio.IUsuarioServicio;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -47,7 +51,7 @@ public class UsuarioControlador {
      */
     @GET
     @Path("/buscarPorId/{id}")
-    public Response buscarPorId(@Valid @PathParam("id") Integer id){
+    public Response buscarPorId(@Valid @PathParam("id") Integer id)throws ResourceNotFoundException{
         return Response
                 .status(Response.Status.OK)
                 .entity(this.servicio.buscarPorId(id))
@@ -61,7 +65,7 @@ public class UsuarioControlador {
      */
     @GET
     @Path("/buscarPorCedula/{cedula}")
-    public Response buscarPorCedula(@Valid @PathParam("cedula") String cedula){
+    public Response buscarPorCedula(@Valid @PathParam("cedula") String cedula)throws ResourceNotFoundException{
         return Response
                 .status(Response.Status.OK)
                 .entity(this.servicio.buscarPorCedula(cedula))
@@ -75,7 +79,7 @@ public class UsuarioControlador {
      */
     @GET
     @Path("/buscarPorCorreo/{correo}")
-    public Response buscarPorCorreo(@Valid @PathParam("correo") String correo){
+    public Response buscarPorCorreo(@Valid @PathParam("correo") String correo) throws ResourceNotFoundException{
         return Response
                 .status(Response.Status.OK)
                 .entity(this.servicio.buscarPorCorreo(correo))
@@ -102,7 +106,7 @@ public class UsuarioControlador {
      */
     @POST
     @Path("/registrar")
-    public Response registrar(@Valid Usuario usuario){
+    public Response registrar(@Valid Usuario usuario)throws ResourceNotFoundException, EntityValidationException, ResourceConflictException{
         this.servicio.registrar(usuario);
         return Response
                 .status(Response.Status.CREATED)
@@ -116,7 +120,7 @@ public class UsuarioControlador {
      */
     @PUT
     @Path("/actualizar")
-    public Response actualizar(@Valid Usuario usuario){
+    public Response actualizar(@Valid Usuario usuario)throws BussinessException, ResourceNotFoundException, EntityValidationException,ResourceConflictException{
         this.servicio.actualizar(usuario);
         return Response
                 .status(Response.Status.OK)
@@ -130,7 +134,7 @@ public class UsuarioControlador {
      */
     @DELETE
     @Path("/eliminarPorIdJPQL/{id}")
-    public Response eliminarPorIdJPQL(@Valid @PathParam("id") Integer id){
+    public Response eliminarPorIdJPQL(@Valid @PathParam("id") Integer id)throws ResourceNotFoundException{
         this.servicio.eliminarJPQL(id);
         return Response
                 .status(Response.Status.NO_CONTENT)
@@ -144,7 +148,7 @@ public class UsuarioControlador {
      */
     @DELETE
     @Path("/eliminarPorIdSQL/{id}")
-    public Response eliminarPorIdSQL(@Valid @PathParam("id") Integer id){
+    public Response eliminarPorIdSQL(@Valid @PathParam("id") Integer id)throws ResourceNotFoundException{
         this.servicio.eliminarSQL(id);
         return Response
                 .status(Response.Status.NO_CONTENT)

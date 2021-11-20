@@ -6,6 +6,10 @@
 package co.edu.unicundi.discotiendaapiwar.controlador;
 
 import co.edu.unicundi.discotiendaejbjar.entidad.Rol;
+import co.edu.unicundi.discotiendaejbjar.excepciones.BussinessException;
+import co.edu.unicundi.discotiendaejbjar.excepciones.EntityValidationException;
+import co.edu.unicundi.discotiendaejbjar.excepciones.ResourceConflictException;
+import co.edu.unicundi.discotiendaejbjar.excepciones.ResourceNotFoundException;
 import co.edu.unicundi.discotiendaejbjar.servicio.IRolServicio;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -47,7 +51,7 @@ public class RolControlador {
      */
     @GET
     @Path("/buscarPorId/{id}")
-    public Response buscarPorId(@Valid @PathParam("id") Integer id){
+    public Response buscarPorId(@Valid @PathParam("id") Integer id)throws ResourceNotFoundException{
         return Response
                 .status(Response.Status.OK)
                 .entity(this.servicio.buscarPorId(id))
@@ -74,7 +78,7 @@ public class RolControlador {
      */
     @POST
     @Path("/registrar")
-    public Response registrar(@Valid Rol rol){
+    public Response registrar(@Valid Rol rol)throws ResourceNotFoundException, EntityValidationException, ResourceConflictException{
         this.servicio.registrar(rol);
         return Response
                 .status(Response.Status.CREATED)
@@ -88,7 +92,7 @@ public class RolControlador {
      */
     @PUT
     @Path("/actualizar")
-    public Response actualizar(@Valid Rol rol){
+    public Response actualizar(@Valid Rol rol)throws BussinessException, ResourceNotFoundException, EntityValidationException, ResourceConflictException{
         this.servicio.actualizar(rol);
         return Response
                 .status(Response.Status.OK)
@@ -102,7 +106,7 @@ public class RolControlador {
      */
     @DELETE
     @Path("/eliminarPorIdJPQL/{id}")
-    public Response eliminarPorIdJPQL(@Valid @PathParam("id") Integer id){
+    public Response eliminarPorIdJPQL(@Valid @PathParam("id") Integer id)throws ResourceNotFoundException{
         this.servicio.eliminarJPQL(id);
         return Response
                 .status(Response.Status.NO_CONTENT)
@@ -116,7 +120,7 @@ public class RolControlador {
      */
     @DELETE
     @Path("/eliminarPorIdSQL/{id}")
-    public Response eliminarPorIdSQL(@Valid @PathParam("id") Integer id){
+    public Response eliminarPorIdSQL(@Valid @PathParam("id") Integer id)throws ResourceNotFoundException{
         this.servicio.eliminarSQL(id);
         return Response
                 .status(Response.Status.NO_CONTENT)

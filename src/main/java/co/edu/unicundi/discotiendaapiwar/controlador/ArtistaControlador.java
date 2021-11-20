@@ -6,6 +6,10 @@
 package co.edu.unicundi.discotiendaapiwar.controlador;
 
 import co.edu.unicundi.discotiendaejbjar.entidad.Artista;
+import co.edu.unicundi.discotiendaejbjar.excepciones.BussinessException;
+import co.edu.unicundi.discotiendaejbjar.excepciones.EntityValidationException;
+import co.edu.unicundi.discotiendaejbjar.excepciones.ResourceConflictException;
+import co.edu.unicundi.discotiendaejbjar.excepciones.ResourceNotFoundException;
 import co.edu.unicundi.discotiendaejbjar.servicio.IArtistaServicio;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -47,7 +51,7 @@ public class ArtistaControlador {
      */
     @GET
     @Path("/buscarPorId/{id}")
-    public Response buscarPorId(@Valid @PathParam("id") Integer id){
+    public Response buscarPorId(@Valid @PathParam("id") Integer id)throws ResourceNotFoundException{
         return Response
                 .status(Response.Status.OK)
                 .entity(this.servicio.buscarPorId(id))
@@ -74,7 +78,7 @@ public class ArtistaControlador {
      */
     @POST
     @Path("/registrar")
-    public Response registrar(@Valid Artista artista){
+    public Response registrar(@Valid Artista artista)throws ResourceNotFoundException, EntityValidationException, ResourceConflictException{
         this.servicio.registrar(artista);
         return Response
                 .status(Response.Status.CREATED)
@@ -88,7 +92,7 @@ public class ArtistaControlador {
      */
     @PUT
     @Path("/actualizar")
-    public Response actualizar(@Valid Artista artista){
+    public Response actualizar(@Valid Artista artista)throws BussinessException, ResourceNotFoundException, EntityValidationException, ResourceConflictException{
         this.servicio.actualizar(artista);
         return Response
                 .status(Response.Status.OK)
@@ -102,7 +106,7 @@ public class ArtistaControlador {
      */
     @DELETE
     @Path("/eliminarPorIdJPQL/{id}")
-    public Response eliminarPorIdJPQL(@Valid @PathParam("id") Integer id){
+    public Response eliminarPorIdJPQL(@Valid @PathParam("id") Integer id)throws ResourceNotFoundException{
         this.servicio.eliminarJPQL(id);
         return Response
                 .status(Response.Status.NO_CONTENT)
@@ -116,7 +120,7 @@ public class ArtistaControlador {
      */
     @DELETE
     @Path("/eliminarPorIdSQL/{id}")
-    public Response eliminarPorIdSQL(@Valid @PathParam("id") Integer id){
+    public Response eliminarPorIdSQL(@Valid @PathParam("id") Integer id)throws ResourceNotFoundException{
         this.servicio.eliminarSQL(id);
         return Response
                 .status(Response.Status.NO_CONTENT)
