@@ -6,6 +6,10 @@
 package co.edu.unicundi.discotiendaapiwar.controlador;
 
 import co.edu.unicundi.discotiendaejbjar.entidad.Cancion;
+import co.edu.unicundi.discotiendaejbjar.excepciones.BussinessException;
+import co.edu.unicundi.discotiendaejbjar.excepciones.EntityValidationException;
+import co.edu.unicundi.discotiendaejbjar.excepciones.ResourceConflictException;
+import co.edu.unicundi.discotiendaejbjar.excepciones.ResourceNotFoundException;
 
 
 import co.edu.unicundi.discotiendaejbjar.servicio.ICancionServicio;
@@ -49,7 +53,7 @@ public class CancionControlador {
      */
     @GET
     @Path("/buscarPorId/{id}")
-    public Response buscarPorId(@Valid @PathParam("id") Integer id){
+    public Response buscarPorId(@Valid @PathParam("id") Integer id)throws ResourceNotFoundException{
         return Response
                 .status(Response.Status.OK)
                 .entity(this.servicio.buscarPorId(id))
@@ -63,7 +67,7 @@ public class CancionControlador {
      */
     @GET
     @Path("/buscarPorNombre/{nombre}")
-    public Response buscarPorNombre(@Valid @PathParam("nombre") String nombre){
+    public Response buscarPorNombre(@Valid @PathParam("nombre") String nombre)throws ResourceNotFoundException{
         return Response
                 .status(Response.Status.OK)
                 .entity(this.servicio.buscarPorNombre(nombre))
@@ -77,7 +81,7 @@ public class CancionControlador {
      */
     @GET
     @Path("/buscarTodosPorIdDisco/{idDisco}")
-    public Response buscarTodosPorIdDisco(@Valid @PathParam("idDisco") Integer idDisco) {
+    public Response buscarTodosPorIdDisco(@Valid @PathParam("idDisco") Integer idDisco)throws ResourceNotFoundException {
         return Response
                 .status(Response.Status.OK)
                 .entity(this.servicio.buscarTodosPorIdDisco(idDisco))
@@ -104,7 +108,7 @@ public class CancionControlador {
      */
     @POST
     @Path("/registrar")
-    public Response registrar(@Valid Cancion cancion){
+    public Response registrar(@Valid Cancion cancion)throws EntityValidationException, ResourceNotFoundException, ResourceConflictException{
         this.servicio.registrar(cancion);
         return Response
                 .status(Response.Status.CREATED)
@@ -118,7 +122,7 @@ public class CancionControlador {
      */
     @PUT
     @Path("/actualizar")
-    public Response actualizar(@Valid Cancion cancion){
+    public Response actualizar(@Valid Cancion cancion)throws BussinessException, ResourceNotFoundException, EntityValidationException,ResourceConflictException{
         this.servicio.actualizar(cancion);
         return Response
                 .status(Response.Status.OK)
@@ -132,7 +136,7 @@ public class CancionControlador {
      */
     @DELETE
     @Path("/eliminarPorIdJPQL/{id}")
-    public Response eliminarPorIdJPQL(@Valid @PathParam("id") Integer id){
+    public Response eliminarPorIdJPQL(@Valid @PathParam("id") Integer id)throws ResourceNotFoundException{
         this.servicio.eliminarJPQL(id);
         return Response
                 .status(Response.Status.NO_CONTENT)
@@ -146,7 +150,7 @@ public class CancionControlador {
      */
     @DELETE
     @Path("/eliminarPorIdSQL/{id}")
-    public Response eliminarPorIdSQL(@Valid @PathParam("id") Integer id){
+    public Response eliminarPorIdSQL(@Valid @PathParam("id") Integer id)throws ResourceNotFoundException{
         this.servicio.eliminarSQL(id);
         return Response
                 .status(Response.Status.NO_CONTENT)

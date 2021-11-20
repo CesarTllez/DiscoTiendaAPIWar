@@ -6,6 +6,10 @@
 package co.edu.unicundi.discotiendaapiwar.controlador;
 
 import co.edu.unicundi.discotiendaejbjar.entidad.Disco;
+import co.edu.unicundi.discotiendaejbjar.excepciones.BussinessException;
+import co.edu.unicundi.discotiendaejbjar.excepciones.EntityValidationException;
+import co.edu.unicundi.discotiendaejbjar.excepciones.ResourceConflictException;
+import co.edu.unicundi.discotiendaejbjar.excepciones.ResourceNotFoundException;
 import co.edu.unicundi.discotiendaejbjar.servicio.IDiscoServicio;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -47,7 +51,7 @@ public class DiscoController {
      */
     @GET
     @Path("/buscarPorId/{id}")
-    public Response buscarPorId(@Valid @PathParam("id") Integer id) {
+    public Response buscarPorId(@Valid @PathParam("id") Integer id)throws ResourceNotFoundException {
         return Response
                 .status(Response.Status.OK)
                 .entity(this.servicio.buscarPorId(id))
@@ -61,7 +65,7 @@ public class DiscoController {
      */
     @GET
     @Path("/buscarPorNombre/{nombre}")
-    public Response buscarPorNombre(@Valid @PathParam("nombre") String nombre) {
+    public Response buscarPorNombre(@Valid @PathParam("nombre") String nombre)throws ResourceNotFoundException{
         return Response
                 .status(Response.Status.OK)
                 .entity(this.servicio.buscarPorNombre(nombre))
@@ -88,7 +92,7 @@ public class DiscoController {
      */
     @POST
     @Path("/registrar")
-    public Response registrar(@Valid Disco disco) {
+    public Response registrar(@Valid Disco disco)throws ResourceNotFoundException, EntityValidationException, EntityValidationException, ResourceConflictException {
         this.servicio.registrar(disco);
         return Response
                 .status(Response.Status.CREATED)
@@ -102,7 +106,7 @@ public class DiscoController {
      */
     @PUT
     @Path("/actualizar")
-    public Response actualizar(@Valid Disco disco) {
+    public Response actualizar(@Valid Disco disco) throws BussinessException, ResourceNotFoundException, EntityValidationException, ResourceConflictException{
         this.servicio.actualizar(disco);
         return Response
                 .status(Response.Status.OK)
@@ -116,7 +120,7 @@ public class DiscoController {
      */
     @DELETE
     @Path("/eliminarPorIdJPQL/{id}")
-    public Response eliminarPorIdJPQL(@Valid @PathParam("id") Integer id) {
+    public Response eliminarPorIdJPQL(@Valid @PathParam("id") Integer id)throws ResourceNotFoundException {
         this.servicio.eliminarJPQL(id);
         return Response
                 .status(Response.Status.NO_CONTENT)
@@ -130,7 +134,7 @@ public class DiscoController {
      */
     @DELETE
     @Path("/eliminarPorIdSQL/{id}")
-    public Response eliminarPorIdSQL(@Valid @PathParam("id") Integer id) {
+    public Response eliminarPorIdSQL(@Valid @PathParam("id") Integer id) throws ResourceNotFoundException {
         this.servicio.eliminarSQL(id);
         return Response
                 .status(Response.Status.NO_CONTENT)
