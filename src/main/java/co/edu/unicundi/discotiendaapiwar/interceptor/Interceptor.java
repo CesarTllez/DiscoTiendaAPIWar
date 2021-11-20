@@ -11,7 +11,6 @@ import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import java.io.IOException;
 import javax.ejb.EJB;
-import javax.ejb.Stateless;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.container.PreMatching;
@@ -21,7 +20,6 @@ import javax.xml.bind.DatatypeConverter;
 
 /**
  * Clase que permite filtrar que rol puede o no consumir cada servicio.
- *
  * @author César Rodríguez
  * @author Eison Morales
  * @author Juan Páez
@@ -37,6 +35,11 @@ public class Interceptor implements ContainerRequestFilter {
     @EJB
     private ITokenServicio servicio;
 
+    /**
+     * Método que filtra las peticiones.
+     * @param requestContext
+     * @throws IOException 
+     */
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
 
@@ -55,7 +58,7 @@ public class Interceptor implements ContainerRequestFilter {
             return;
         }
 
-        //Validar token de acuerdo con el servicio que corresponda.
+        //Validar si se envió token o no en la petición..
         if (token == null) {
             //---------------------Retornar exepcion wrapper.---------------------------------------
             requestContext.abortWith(Response
@@ -66,14 +69,16 @@ public class Interceptor implements ContainerRequestFilter {
             );
             return;
         } else {
-           // if (this.servicio.validarExistenciaPorContenido(token) == 1) {
+            //Validar si existe token en la base de datos.
+           if (this.servicio.validarExistenciaPorContenido(token) == 1) {
                 try {
-
+                    
                     Claims claims = Jwts.parser()
                             .setSigningKey(DatatypeConverter.parseBase64Binary(llaveToken))
                             .parseClaimsJws(token).getBody();
                     
 
+                    //Filtrar servicios de acuerdo con el rol que les correspondan.
                     if (((ruta.contains("/artistas/"))
                             || (ruta.contains("/discos/"))
                             || (ruta.contains("/canciones/"))
@@ -113,7 +118,7 @@ public class Interceptor implements ContainerRequestFilter {
                     );
                     return;
                 }
-           /* }else{
+           }else{
                 //---------------------Retornar exepcion wrapper.---------------------------------------
                     requestContext.abortWith(Response
                             .status(Response.Status.UNAUTHORIZED)
@@ -122,7 +127,7 @@ public class Interceptor implements ContainerRequestFilter {
                     //------------------------------------------------------------------------------------
                     );
                     return;
-            }*/
+            }
 
         }
 

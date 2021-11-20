@@ -35,6 +35,7 @@ public class ApplicationConfig extends Application {
         resources.add(co.edu.unicundi.discotiendaapiwar.controlador.RolControlador.class);
         resources.add(co.edu.unicundi.discotiendaapiwar.controlador.SesionControlador.class);
         resources.add(co.edu.unicundi.discotiendaapiwar.controlador.UsuarioControlador.class);
+        resources.add(co.edu.unicundi.discotiendaapiwar.excepciones.ExceptionHandler.class);
         resources.add(co.edu.unicundi.discotiendaapiwar.interceptor.Interceptor.class);
     }
     
