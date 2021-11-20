@@ -5,7 +5,6 @@
  */
 package co.edu.unicundi.discotiendaapiwar.controlador;
 
-import co.edu.unicundi.discotiendaejbjar.entidad.Token;
 import co.edu.unicundi.discotiendaejbjar.servicio.IUsuarioServicio;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -29,21 +28,27 @@ import javax.ws.rs.core.Response;
 @Path("autenticacion")
 public class LoginControlador {
     
+    /**
+     * Permite la conexión con el EJB para adquirir los servicios.
+     */
     @EJB
     private IUsuarioServicio servicio;
     
+    /**
+     * Método GET que permite obtener el token de autenticación.
+     * @param apodo
+     * @param contrasena
+     * @return 
+     */
     @GET
     @Path("/obtenerToken/{apodo}/{contrasena}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response iniciarSesion(@Valid @PathParam("apodo") String apodo, 
                                                                @PathParam("contrasena") String contrasena ){
-        Token datosLogin = new Token();
-        datosLogin.setApodo(apodo);
-        datosLogin.setContrasena(contrasena);
         return Response
                 .status(Response.Status.OK)
-                .entity(this.servicio.login(datosLogin))
+                .entity(this.servicio.login(apodo, contrasena))
                 .build();
     }
     
