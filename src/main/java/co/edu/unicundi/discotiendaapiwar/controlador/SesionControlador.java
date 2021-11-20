@@ -25,8 +25,8 @@ import javax.ws.rs.core.Response;
  * @author Diego Cobos
  */
 @Stateless
-@Path("autenticacion")
-public class LoginControlador {
+@Path("sesiones")
+public class SesionControlador {
     
     /**
      * Permite la conexión con el EJB para adquirir los servicios.
@@ -41,7 +41,7 @@ public class LoginControlador {
      * @return 
      */
     @GET
-    @Path("/obtenerToken/{apodo}/{contrasena}")
+    @Path("/iniciar/{apodo}/{contrasena}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response iniciarSesion(@Valid @PathParam("apodo") String apodo, 
