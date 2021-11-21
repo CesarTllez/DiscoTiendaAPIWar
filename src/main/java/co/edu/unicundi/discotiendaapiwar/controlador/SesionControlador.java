@@ -48,7 +48,23 @@ public class SesionControlador {
                                                                @PathParam("contrasena") String contrasena ){
         return Response
                 .status(Response.Status.OK)
-                .entity(this.servicio.login(apodo, contrasena))
+                .entity(this.servicio.iniciarSesion(apodo, contrasena))
+                .build();
+    }
+    
+    /**
+     * Método GET que permite finalizar sesion.
+     * @param id
+     * @return 
+     */
+    @GET
+    @Path("/finalizar/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response finalizarSesion(@PathParam("id") Integer id){
+        this.servicio.cerrarSesion(id);
+        return Response
+                .status(Response.Status.OK)
                 .build();
     }
     

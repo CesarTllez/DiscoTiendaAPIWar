@@ -20,6 +20,7 @@ import javax.xml.bind.DatatypeConverter;
 
 /**
  * Clase que permite filtrar que rol puede o no consumir cada servicio.
+ *
  * @author César Rodríguez
  * @author Eison Morales
  * @author Juan Páez
@@ -37,8 +38,9 @@ public class Interceptor implements ContainerRequestFilter {
 
     /**
      * Método que filtra las peticiones.
+     *
      * @param requestContext
-     * @throws IOException 
+     * @throws IOException
      */
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
@@ -70,13 +72,13 @@ public class Interceptor implements ContainerRequestFilter {
             return;
         } else {
             //Validar si existe token en la base de datos.
-           if (this.servicio.validarExistenciaPorContenido(token) == 1) {
+            if (this.servicio.validarExistenciaPorContenido(token) == 1) {
                 try {
-                    
+
+                    //-----------------------Cambio a Json pendiente-----------------------
                     Claims claims = Jwts.parser()
                             .setSigningKey(DatatypeConverter.parseBase64Binary(llaveToken))
                             .parseClaimsJws(token).getBody();
-                    
 
                     //Filtrar servicios de acuerdo con el rol que les correspondan.
                     if (((ruta.contains("/artistas/"))
@@ -96,6 +98,10 @@ public class Interceptor implements ContainerRequestFilter {
                             || (ruta.contains("/canciones/buscarPorId"))
                             || (ruta.contains("/canciones/buscarPorNombre")))
                             && (claims.toString().contains("Cliente"))) {
+                        return;
+                    } else if ((ruta.contains("/sesiones/finalizar"))
+                            && ((claims.toString().contains("Administrador"))
+                            || (claims.toString().contains("Cliente")))) {
                         return;
                     } else {
                         //---------------------Retornar excepcion wrapper.---------------------------------------
@@ -118,15 +124,15 @@ public class Interceptor implements ContainerRequestFilter {
                     );
                     return;
                 }
-           }else{
+            } else {
                 //---------------------Retornar excepcion wrapper.---------------------------------------
-                    requestContext.abortWith(Response
-                            .status(Response.Status.UNAUTHORIZED)
-                            .entity("TOKEN NO VALIDO")
-                            .build()
-                    //------------------------------------------------------------------------------------
-                    );
-                    return;
+                requestContext.abortWith(Response
+                        .status(Response.Status.UNAUTHORIZED)
+                        .entity("TOKEN NO VALIDO")
+                        .build()
+                //------------------------------------------------------------------------------------
+                );
+                return;
             }
 
         }
