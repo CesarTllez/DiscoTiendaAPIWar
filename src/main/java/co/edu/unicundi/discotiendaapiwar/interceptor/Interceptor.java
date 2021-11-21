@@ -60,7 +60,7 @@ public class Interceptor implements ContainerRequestFilter {
 
         //Validar si se envió token o no en la petición..
         if (token == null) {
-            //---------------------Retornar exepcion wrapper.---------------------------------------
+            //---------------------Retornar excepcion wrapper.---------------------------------------
             requestContext.abortWith(Response
                     .status(Response.Status.UNAUTHORIZED)
                     .entity("TOKEN NO VALIDO")
@@ -98,7 +98,7 @@ public class Interceptor implements ContainerRequestFilter {
                             && (claims.toString().contains("Cliente"))) {
                         return;
                     } else {
-                        //---------------------Retornar exepcion wrapper.---------------------------------------
+                        //---------------------Retornar excepcion wrapper.---------------------------------------
                         requestContext.abortWith(Response
                                 .status(Response.Status.UNAUTHORIZED)
                                 .entity("TOKEN NO PERMITIDO PARA ESTA OPERACION")
@@ -109,7 +109,7 @@ public class Interceptor implements ContainerRequestFilter {
                     }
 
                 } catch (ExpiredJwtException e) {
-                    //---------------------Retornar exepcion wrapper.---------------------------------------
+                    //---------------------Retornar excepcion wrapper.---------------------------------------
                     requestContext.abortWith(Response
                             .status(Response.Status.UNAUTHORIZED)
                             .entity("TOKEN CADUCADO")
@@ -119,7 +119,7 @@ public class Interceptor implements ContainerRequestFilter {
                     return;
                 }
            }else{
-                //---------------------Retornar exepcion wrapper.---------------------------------------
+                //---------------------Retornar excepcion wrapper.---------------------------------------
                     requestContext.abortWith(Response
                             .status(Response.Status.UNAUTHORIZED)
                             .entity("TOKEN NO VALIDO")
