@@ -11,6 +11,7 @@ import javax.ejb.Stateless;
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -54,15 +55,15 @@ public class SesionControlador {
     
     /**
      * Método GET que permite finalizar sesion.
-     * @param id
+     * @param token
      * @return 
      */
     @GET
-    @Path("/finalizar/{id}")
+    @Path("/finalizar")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response finalizarSesion(@PathParam("id") Integer id){
-        this.servicio.cerrarSesion(id);
+    public Response finalizarSesion(@HeaderParam("Authorization") String token){
+        this.servicio.cerrarSesion(token);
         return Response
                 .status(Response.Status.OK)
                 .build();
