@@ -5,7 +5,9 @@
  */
 package co.edu.unicundi.discotiendaapiwar.interceptor;
 
+import co.edu.unicundi.discotiendaejbjar.dto.TokenDto;
 import co.edu.unicundi.discotiendaejbjar.servicio.ITokenServicio;
+import com.google.gson.Gson;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -75,10 +77,15 @@ public class Interceptor implements ContainerRequestFilter {
             if (this.servicio.validarExistenciaPorContenido(token) == 1) {
                 try {
 
-                    //-----------------------Cambio a Json pendiente-----------------------
                     Claims claims = Jwts.parser()
                             .setSigningKey(DatatypeConverter.parseBase64Binary(llaveToken))
                             .parseClaimsJws(token).getBody();
+                    
+                    //Volviendo claims a tipo gson para transferir la información a dto.
+                    Gson gson = new Gson();
+                    TokenDto tokenDto = gson.fromJson(
+                            gson.toJson(claims), 
+                            TokenDto.class);
 
                     //Filtrar servicios de acuerdo con el rol que les correspondan.
                     if (((ruta.contains("/artistas/"))
@@ -86,7 +93,7 @@ public class Interceptor implements ContainerRequestFilter {
                             || (ruta.contains("/canciones/"))
                             || (ruta.contains("/usuarios/buscarTodos"))
                             || (ruta.contains("/usuarios/buscarPorId")))
-                            && (claims.toString().contains("Administrador"))) {
+                            && (tokenDto.getRol().getNombre().equals("Administrador"))) {
                         return;
                     } else if (((ruta.contains("/artistas/buscarTodos"))
                             || (ruta.contains("/artistas/buscarPorId"))
@@ -97,11 +104,11 @@ public class Interceptor implements ContainerRequestFilter {
                             || (ruta.contains("/canciones/buscarTodosPorIdDisco"))
                             || (ruta.contains("/canciones/buscarPorId"))
                             || (ruta.contains("/canciones/buscarPorNombre")))
-                            && (claims.toString().contains("Cliente"))) {
+                            && (tokenDto.getRol().getNombre().equals("Cliente"))) {
                         return;
                     } else if ((ruta.contains("/sesiones/finalizar"))
-                            && ((claims.toString().contains("Administrador"))
-                            || (claims.toString().contains("Cliente")))) {
+                            && ((tokenDto.getRol().getNombre().equals("Administrador"))
+                            || (tokenDto.getRol().getNombre().equals("Cliente")))) {
                         return;
                     } else {
                         //---------------------Retornar excepcion wrapper.---------------------------------------
