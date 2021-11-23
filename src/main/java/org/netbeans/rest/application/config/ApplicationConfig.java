@@ -29,6 +29,7 @@ public class ApplicationConfig extends Application {
      * If required, comment out calling this method in getClasses().
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
+        resources.add(co.edu.unicundi.discotiendaapiwar.CORS.CorsFilter.class);
         resources.add(co.edu.unicundi.discotiendaapiwar.controlador.ArtistaControlador.class);
         resources.add(co.edu.unicundi.discotiendaapiwar.controlador.CancionControlador.class);
         resources.add(co.edu.unicundi.discotiendaapiwar.controlador.DiscoController.class);
