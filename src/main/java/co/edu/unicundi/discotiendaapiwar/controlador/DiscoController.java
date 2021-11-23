@@ -10,6 +10,7 @@ import co.edu.unicundi.discotiendaejbjar.excepciones.BussinessException;
 import co.edu.unicundi.discotiendaejbjar.excepciones.EntityValidationException;
 import co.edu.unicundi.discotiendaejbjar.excepciones.ResourceConflictException;
 import co.edu.unicundi.discotiendaejbjar.excepciones.ResourceNotFoundException;
+import co.edu.unicundi.discotiendaejbjar.excepciones.UnauthorizedException;
 import co.edu.unicundi.discotiendaejbjar.servicio.IDiscoServicio;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -92,7 +93,7 @@ public class DiscoController {
      */
     @POST
     @Path("/registrar")
-    public Response registrar(@Valid Disco disco)throws ResourceNotFoundException, EntityValidationException, EntityValidationException, ResourceConflictException {
+    public Response registrar(@Valid Disco disco)throws ResourceNotFoundException, EntityValidationException, EntityValidationException, ResourceConflictException, UnauthorizedException {
         this.servicio.registrar(disco);
         return Response
                 .status(Response.Status.CREATED)

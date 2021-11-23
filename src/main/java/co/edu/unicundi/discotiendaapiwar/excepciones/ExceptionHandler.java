@@ -8,6 +8,7 @@ package co.edu.unicundi.discotiendaapiwar.excepciones;
 import co.edu.unicundi.discotiendaejbjar.excepciones.EntityValidationException;
 import co.edu.unicundi.discotiendaejbjar.excepciones.ResourceConflictException;
 import co.edu.unicundi.discotiendaejbjar.excepciones.ResourceNotFoundException;
+import co.edu.unicundi.discotiendaejbjar.excepciones.UnauthorizedException;
 import javax.ejb.EJBException;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
@@ -47,7 +48,10 @@ public class ExceptionHandler implements ExceptionMapper<Exception>{
                     wrapper = new ExceptionWrapper(String.valueOf(status.getStatus()), String.valueOf(status.getStatusInfo()), ex.getMessage(),
                             urlExcepcion.getPath());
                     return Response.status(Response.Status.BAD_REQUEST).entity(wrapper).build();
-
+                case 401: 
+                    wrapper = new ExceptionWrapper(String.valueOf(status.getStatus()), String.valueOf(status.getStatusInfo()), ex.getMessage(),
+                            urlExcepcion.getPath());
+                    return Response.status(Response.Status.UNAUTHORIZED).entity(wrapper).build();
                 case 404:
                     wrapper = new ExceptionWrapper(String.valueOf(status.getStatus()), String.valueOf(status.getStatusInfo()), ex.getMessage(),
                             urlExcepcion.getPath());
@@ -92,6 +96,11 @@ public class ExceptionHandler implements ExceptionMapper<Exception>{
                         if (ex instanceof ResourceConflictException) {
                             wrapper = new ExceptionWrapper("409", "CONFLICT", ex.getMessage(), urlExcepcion.getPath());
                             return Response.status(Response.Status.CONFLICT).entity(wrapper).build();
+                        }else {
+                        if (ex instanceof UnauthorizedException) {
+                            wrapper = new ExceptionWrapper("401", "UNAUTHORIZED", ex.getMessage(), urlExcepcion.getPath());
+                            return Response.status(Response.Status.UNAUTHORIZED).entity(wrapper).build();
+                        }
                         }
                     }
                     return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("").build();

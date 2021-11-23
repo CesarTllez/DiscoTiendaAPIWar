@@ -10,6 +10,7 @@ import co.edu.unicundi.discotiendaejbjar.excepciones.BussinessException;
 import co.edu.unicundi.discotiendaejbjar.excepciones.EntityValidationException;
 import co.edu.unicundi.discotiendaejbjar.excepciones.ResourceConflictException;
 import co.edu.unicundi.discotiendaejbjar.excepciones.ResourceNotFoundException;
+import co.edu.unicundi.discotiendaejbjar.excepciones.UnauthorizedException;
 import co.edu.unicundi.discotiendaejbjar.servicio.IUsuarioServicio;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -106,7 +107,7 @@ public class UsuarioControlador {
      */
     @POST
     @Path("/registrar")
-    public Response registrar(@Valid Usuario usuario)throws ResourceNotFoundException, EntityValidationException, ResourceConflictException{
+    public Response registrar(@Valid Usuario usuario)throws ResourceNotFoundException, EntityValidationException, ResourceConflictException, UnauthorizedException{
         this.servicio.registrar(usuario);
         return Response
                 .status(Response.Status.CREATED)
