@@ -18,6 +18,7 @@ import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -117,12 +118,13 @@ public class UsuarioControlador {
     /**
      * Método PUT que permite actualizar a un usuario.
      * @param usuario
+     * @param token
      * @return Response
      */
     @PUT
     @Path("/actualizar")
-    public Response actualizar(@Valid Usuario usuario)throws BussinessException, ResourceNotFoundException, EntityValidationException,ResourceConflictException{
-        this.servicio.actualizar(usuario);
+    public Response actualizar(@Valid Usuario usuario, @HeaderParam("Authorization") String token)throws BussinessException, ResourceNotFoundException, EntityValidationException,ResourceConflictException{
+        this.servicio.actualizarTk(usuario, token);
         return Response
                 .status(Response.Status.OK)
                 .build();
