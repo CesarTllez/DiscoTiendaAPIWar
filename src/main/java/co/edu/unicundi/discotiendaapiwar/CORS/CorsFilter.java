@@ -9,6 +9,7 @@ import java.io.IOException;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerResponseContext;
 import javax.ws.rs.container.ContainerResponseFilter;
+import javax.ws.rs.ext.Provider;
 
 /**
  * Clase que implementa la interfaz "ContainerResponseFilter" para
@@ -18,6 +19,7 @@ import javax.ws.rs.container.ContainerResponseFilter;
  * @author Juan Páez
  * @author Diego Cobos
  */
+@Provider
 public class CorsFilter implements ContainerResponseFilter{
 
     /**
