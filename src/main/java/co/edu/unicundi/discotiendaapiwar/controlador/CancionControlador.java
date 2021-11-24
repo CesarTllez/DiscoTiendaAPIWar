@@ -6,7 +6,6 @@
 package co.edu.unicundi.discotiendaapiwar.controlador;
 
 import co.edu.unicundi.discotiendaejbjar.entidad.Cancion;
-import co.edu.unicundi.discotiendaejbjar.excepciones.BussinessException;
 import co.edu.unicundi.discotiendaejbjar.excepciones.EntityValidationException;
 import co.edu.unicundi.discotiendaejbjar.excepciones.ResourceConflictException;
 import co.edu.unicundi.discotiendaejbjar.excepciones.ResourceNotFoundException;
@@ -123,7 +122,7 @@ public class CancionControlador {
      */
     @PUT
     @Path("/actualizar")
-    public Response actualizar(@Valid Cancion cancion)throws BussinessException, ResourceNotFoundException, EntityValidationException,ResourceConflictException{
+    public Response actualizar(@Valid Cancion cancion)throws ResourceNotFoundException, EntityValidationException,ResourceConflictException{
         this.servicio.actualizar(cancion);
         return Response
                 .status(Response.Status.OK)

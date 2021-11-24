@@ -6,7 +6,6 @@
 package co.edu.unicundi.discotiendaapiwar.controlador;
 
 import co.edu.unicundi.discotiendaejbjar.entidad.Rol;
-import co.edu.unicundi.discotiendaejbjar.excepciones.BussinessException;
 import co.edu.unicundi.discotiendaejbjar.excepciones.EntityValidationException;
 import co.edu.unicundi.discotiendaejbjar.excepciones.ResourceConflictException;
 import co.edu.unicundi.discotiendaejbjar.excepciones.ResourceNotFoundException;
@@ -93,7 +92,7 @@ public class RolControlador {
      */
     @PUT
     @Path("/actualizar")
-    public Response actualizar(@Valid Rol rol)throws BussinessException, ResourceNotFoundException, EntityValidationException, ResourceConflictException{
+    public Response actualizar(@Valid Rol rol)throws ResourceNotFoundException, EntityValidationException, ResourceConflictException{
         this.servicio.actualizar(rol);
         return Response
                 .status(Response.Status.OK)

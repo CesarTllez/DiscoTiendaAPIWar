@@ -5,6 +5,8 @@
  */
 package co.edu.unicundi.discotiendaapiwar.controlador;
 
+import co.edu.unicundi.discotiendaejbjar.excepciones.ResourceNotFoundException;
+import co.edu.unicundi.discotiendaejbjar.excepciones.UnauthorizedException;
 import co.edu.unicundi.discotiendaejbjar.servicio.IUsuarioServicio;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -46,7 +48,7 @@ public class SesionControlador {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response iniciarSesion(@Valid @PathParam("apodo") String apodo, 
-                                                               @PathParam("contrasena") String contrasena ){
+                                                               @PathParam("contrasena") String contrasena )throws  ResourceNotFoundException, UnauthorizedException{
         return Response
                 .status(Response.Status.OK)
                 .entity(this.servicio.iniciarSesion(apodo, contrasena))
@@ -62,7 +64,7 @@ public class SesionControlador {
     @Path("/finalizar")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response finalizarSesion(@HeaderParam("Authorization") String token){
+    public Response finalizarSesion(@HeaderParam("Authorization") String token)throws UnauthorizedException{
         this.servicio.cerrarSesion(token);
         return Response
                 .status(Response.Status.OK)

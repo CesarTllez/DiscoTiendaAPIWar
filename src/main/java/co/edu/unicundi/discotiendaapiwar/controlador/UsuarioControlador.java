@@ -6,7 +6,6 @@
 package co.edu.unicundi.discotiendaapiwar.controlador;
 
 import co.edu.unicundi.discotiendaejbjar.entidad.Usuario;
-import co.edu.unicundi.discotiendaejbjar.excepciones.BussinessException;
 import co.edu.unicundi.discotiendaejbjar.excepciones.EntityValidationException;
 import co.edu.unicundi.discotiendaejbjar.excepciones.ResourceConflictException;
 import co.edu.unicundi.discotiendaejbjar.excepciones.ResourceNotFoundException;
@@ -123,7 +122,7 @@ public class UsuarioControlador {
      */
     @PUT
     @Path("/actualizar")
-    public Response actualizar(@Valid Usuario usuario, @HeaderParam("Authorization") String token)throws BussinessException, ResourceNotFoundException, EntityValidationException,ResourceConflictException{
+    public Response actualizar(@Valid Usuario usuario, @HeaderParam("Authorization") String token)throws ResourceNotFoundException, EntityValidationException,ResourceConflictException, UnauthorizedException{
         this.servicio.actualizarTk(usuario, token);
         return Response
                 .status(Response.Status.OK)
