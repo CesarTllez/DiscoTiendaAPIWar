@@ -114,35 +114,6 @@ public class Interceptor implements ContainerRequestFilter {
                             && (tokenInterceptor.getRol().getNombre().equals("Administrador"))) {
                         return;
                     } else try {
-                        if (((ruta.contains("/usuarios/buscarPorId/"+this.servicioUsuario.buscarPorApodo(
-                            tokenInterceptor.getSub()).getId()))
-                            || (ruta.contains("/usuarios/actualizar"))
-                            || (ruta.contains("/artistas/buscarTodos"))
-                            || (ruta.contains("/artistas/buscarPorId"))
-                            || (ruta.contains("/discos/buscarTodos"))
-                            || (ruta.contains("/discos/buscarTodosPorIdArtista"))
-                            || (ruta.contains("/discos/buscarPorId"))
-                            || (ruta.contains("/discos/buscarPorNombre"))
-                            || (ruta.contains("/canciones/buscarTodos"))
-                            || (ruta.contains("/canciones/buscarTodosPorIdDisco"))
-                            || (ruta.contains("/canciones/buscarPorId"))
-                            || (ruta.contains("/canciones/buscarPorNombre")))
-                            && (tokenInterceptor.getRol().getNombre().equals("Cliente"))) {
-                        return;
-                    } else if ((ruta.contains("/sesiones/finalizar"))
-                            && ((tokenInterceptor.getRol().getNombre().equals("Administrador"))
-                            || (tokenInterceptor.getRol().getNombre().equals("Cliente")))) {
-                        return;
-                    } else {
-                        //---------------------Retornar excepcion wrapper.---------------------------------------
-                        requestContext.abortWith(Response
-                                .status(Response.Status.UNAUTHORIZED)
-                                .entity("TOKEN NO PERMITIDO PARA ESTA OPERACION")
-                                .build()
-                        //------------------------------------------------------------------------------------
-                        );
-                        return;
-                    } else try {
                         if (((ruta.contains("/usuarios/buscarPorId/"+this.servicioUsuario.buscarPorApodo (
                                 tokenInterceptor.getSub()).getId()))
                                 || (ruta.contains("/usuarios/actualizar"))
