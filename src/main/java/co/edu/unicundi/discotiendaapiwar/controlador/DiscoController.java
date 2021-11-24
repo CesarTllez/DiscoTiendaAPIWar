@@ -84,6 +84,20 @@ public class DiscoController {
                 .entity(this.servicio.buscarTodo())
                 .build();
     }
+    
+    /**
+     * Método GET que permite buscar todos los discos por id del artista.
+     * @param idArtista
+     * @return 
+     */
+    @GET
+    @Path("/buscarTodosPorIdArtista/{idArtista}")
+    public Response buscarTodosPorIdArtista(@PathParam("idArtista") Integer idArtista) {
+        return Response
+                .status(Response.Status.OK)
+                .entity(this.servicio.buscarTodosPorIdArtista(idArtista))
+                .build();
+    }
  
     /**
      * Método POST que permite registrar un disco.

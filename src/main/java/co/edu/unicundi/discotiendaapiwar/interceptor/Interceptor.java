@@ -96,6 +96,7 @@ public class Interceptor implements ContainerRequestFilter {
                     //Filtrar servicios de acuerdo con el rol que les correspondan.
                     if (((ruta.contains("/artistas/"))
                             || (ruta.contains("/discos/"))
+                            || (ruta.contains("/discos/buscarTodosPorIdArtista"))
                             || (ruta.contains("/canciones/"))
                             || (ruta.contains("/usuarios/buscarTodos"))
                             || (ruta.contains("/usuarios/buscarPorId")))
@@ -107,6 +108,7 @@ public class Interceptor implements ContainerRequestFilter {
                             || (ruta.contains("/artistas/buscarTodos"))
                             || (ruta.contains("/artistas/buscarPorId"))
                             || (ruta.contains("/discos/buscarTodos"))
+                            || (ruta.contains("/discos/buscarTodosPorIdArtista"))
                             || (ruta.contains("/discos/buscarPorId"))
                             || (ruta.contains("/discos/buscarPorNombre"))
                             || (ruta.contains("/canciones/buscarTodos"))
