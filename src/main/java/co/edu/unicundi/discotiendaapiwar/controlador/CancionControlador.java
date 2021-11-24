@@ -6,10 +6,10 @@
 package co.edu.unicundi.discotiendaapiwar.controlador;
 
 import co.edu.unicundi.discotiendaejbjar.entidad.Cancion;
-import co.edu.unicundi.discotiendaejbjar.excepciones.BussinessException;
 import co.edu.unicundi.discotiendaejbjar.excepciones.EntityValidationException;
 import co.edu.unicundi.discotiendaejbjar.excepciones.ResourceConflictException;
 import co.edu.unicundi.discotiendaejbjar.excepciones.ResourceNotFoundException;
+import co.edu.unicundi.discotiendaejbjar.excepciones.UnauthorizedException;
 
 
 import co.edu.unicundi.discotiendaejbjar.servicio.ICancionServicio;
@@ -108,7 +108,7 @@ public class CancionControlador {
      */
     @POST
     @Path("/registrar")
-    public Response registrar(@Valid Cancion cancion)throws EntityValidationException, ResourceNotFoundException, ResourceConflictException{
+    public Response registrar(@Valid Cancion cancion)throws EntityValidationException, ResourceNotFoundException, ResourceConflictException, UnauthorizedException{
         this.servicio.registrar(cancion);
         return Response
                 .status(Response.Status.CREATED)
@@ -122,7 +122,7 @@ public class CancionControlador {
      */
     @PUT
     @Path("/actualizar")
-    public Response actualizar(@Valid Cancion cancion)throws BussinessException, ResourceNotFoundException, EntityValidationException,ResourceConflictException{
+    public Response actualizar(@Valid Cancion cancion)throws ResourceNotFoundException, EntityValidationException,ResourceConflictException{
         this.servicio.actualizar(cancion);
         return Response
                 .status(Response.Status.OK)

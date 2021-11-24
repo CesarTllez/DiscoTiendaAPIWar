@@ -6,10 +6,10 @@
 package co.edu.unicundi.discotiendaapiwar.controlador;
 
 import co.edu.unicundi.discotiendaejbjar.entidad.Usuario;
-import co.edu.unicundi.discotiendaejbjar.excepciones.BussinessException;
 import co.edu.unicundi.discotiendaejbjar.excepciones.EntityValidationException;
 import co.edu.unicundi.discotiendaejbjar.excepciones.ResourceConflictException;
 import co.edu.unicundi.discotiendaejbjar.excepciones.ResourceNotFoundException;
+import co.edu.unicundi.discotiendaejbjar.excepciones.UnauthorizedException;
 import co.edu.unicundi.discotiendaejbjar.servicio.IUsuarioServicio;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -107,7 +107,7 @@ public class UsuarioControlador {
      */
     @POST
     @Path("/registrar")
-    public Response registrar(@Valid Usuario usuario)throws ResourceNotFoundException, EntityValidationException, ResourceConflictException{
+    public Response registrar(@Valid Usuario usuario)throws ResourceNotFoundException, EntityValidationException, ResourceConflictException, UnauthorizedException{
         this.servicio.registrar(usuario);
         return Response
                 .status(Response.Status.CREATED)
@@ -122,7 +122,7 @@ public class UsuarioControlador {
      */
     @PUT
     @Path("/actualizar")
-    public Response actualizar(@Valid Usuario usuario, @HeaderParam("Authorization") String token)throws BussinessException, ResourceNotFoundException, EntityValidationException,ResourceConflictException{
+    public Response actualizar(@Valid Usuario usuario, @HeaderParam("Authorization") String token)throws ResourceNotFoundException, EntityValidationException,ResourceConflictException, UnauthorizedException{
         this.servicio.actualizarTk(usuario, token);
         return Response
                 .status(Response.Status.OK)

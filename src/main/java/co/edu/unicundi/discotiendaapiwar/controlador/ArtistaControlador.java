@@ -6,10 +6,11 @@
 package co.edu.unicundi.discotiendaapiwar.controlador;
 
 import co.edu.unicundi.discotiendaejbjar.entidad.Artista;
-import co.edu.unicundi.discotiendaejbjar.excepciones.BussinessException;
+
 import co.edu.unicundi.discotiendaejbjar.excepciones.EntityValidationException;
 import co.edu.unicundi.discotiendaejbjar.excepciones.ResourceConflictException;
 import co.edu.unicundi.discotiendaejbjar.excepciones.ResourceNotFoundException;
+import co.edu.unicundi.discotiendaejbjar.excepciones.UnauthorizedException;
 import co.edu.unicundi.discotiendaejbjar.servicio.IArtistaServicio;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -78,7 +79,7 @@ public class ArtistaControlador {
      */
     @POST
     @Path("/registrar")
-    public Response registrar(@Valid Artista artista)throws ResourceNotFoundException, EntityValidationException, ResourceConflictException{
+    public Response registrar(@Valid Artista artista)throws ResourceNotFoundException, EntityValidationException, ResourceConflictException, UnauthorizedException{
         this.servicio.registrar(artista);
         return Response
                 .status(Response.Status.CREATED)
@@ -92,7 +93,7 @@ public class ArtistaControlador {
      */
     @PUT
     @Path("/actualizar")
-    public Response actualizar(@Valid Artista artista)throws BussinessException, ResourceNotFoundException, EntityValidationException, ResourceConflictException{
+    public Response actualizar(@Valid Artista artista)throws ResourceNotFoundException, EntityValidationException, ResourceConflictException{
         this.servicio.actualizar(artista);
         return Response
                 .status(Response.Status.OK)

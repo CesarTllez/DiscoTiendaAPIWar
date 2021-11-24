@@ -5,7 +5,10 @@
  */
 package co.edu.unicundi.discotiendaapiwar.interceptor;
 
+import co.edu.unicundi.discotiendaapiwar.excepciones.ExceptionWrapper;
 import co.edu.unicundi.discotiendaejbjar.dto.TokenInterceptor;
+import co.edu.unicundi.discotiendaejbjar.excepciones.ResourceNotFoundException;
+import co.edu.unicundi.discotiendaejbjar.excepciones.UnauthorizedException;
 import co.edu.unicundi.discotiendaejbjar.servicio.ITokenServicio;
 import co.edu.unicundi.discotiendaejbjar.servicio.IUsuarioServicio;
 import com.google.gson.Gson;
@@ -13,11 +16,15 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.container.PreMatching;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.ext.Provider;
 import javax.xml.bind.DatatypeConverter;
 
@@ -32,7 +39,10 @@ import javax.xml.bind.DatatypeConverter;
 @Provider
 @PreMatching
 public class Interceptor implements ContainerRequestFilter {
-
+       
+    @Context
+    private UriInfo urlExcepcion;
+    ExceptionWrapper objeto = new ExceptionWrapper();
     /**
      * Permite la conexión con el EJB para adquirir los servicios.
      */
@@ -72,13 +82,14 @@ public class Interceptor implements ContainerRequestFilter {
         //Validar si se envió token o no en la petición..
         if (token == null) {
             //---------------------Retornar excepcion wrapper.---------------------------------------
-            requestContext.abortWith(Response
-                    .status(Response.Status.UNAUTHORIZED)
-                    .entity("TOKEN NO VALIDO")
-                    .build()
-            //------------------------------------------------------------------------------------
-            );
-            return;
+           objeto = new ExceptionWrapper("401", "UNAUTHORIZED", "TOKEN NO VALIDO.", urlExcepcion.getPath());
+                            requestContext.abortWith( Response
+                                    .status(Response.Status.UNAUTHORIZED)
+                                    .entity(objeto)
+                                    .build()
+                            );
+                                return;    
+          //------------------------------------------------------------------------------------------
         } else {
             //Validar si existe token en la base de datos.
             if (this.servicio.validarExistenciaPorContenido(token) == 1) {
@@ -102,7 +113,8 @@ public class Interceptor implements ContainerRequestFilter {
                             || (ruta.contains("/usuarios/buscarPorId")))
                             && (tokenInterceptor.getRol().getNombre().equals("Administrador"))) {
                         return;
-                    } else if (((ruta.contains("/usuarios/buscarPorId/"+this.servicioUsuario.buscarPorApodo(
+                    } else try {
+                        if (((ruta.contains("/usuarios/buscarPorId/"+this.servicioUsuario.buscarPorApodo(
                             tokenInterceptor.getSub()).getId()))
                             || (ruta.contains("/usuarios/actualizar"))
                             || (ruta.contains("/artistas/buscarTodos"))
@@ -130,27 +142,67 @@ public class Interceptor implements ContainerRequestFilter {
                         //------------------------------------------------------------------------------------
                         );
                         return;
+                    } else try {
+                        if (((ruta.contains("/usuarios/buscarPorId/"+this.servicioUsuario.buscarPorApodo (
+                                tokenInterceptor.getSub()).getId()))
+                                || (ruta.contains("/usuarios/actualizar"))
+                                || (ruta.contains("/artistas/buscarTodos"))
+                                || (ruta.contains("/artistas/buscarPorId"))
+                                || (ruta.contains("/discos/buscarTodos"))
+                                || (ruta.contains("/discos/buscarPorId"))
+                                || (ruta.contains("/discos/buscarPorNombre"))
+                                || (ruta.contains("/canciones/buscarTodos"))
+                                || (ruta.contains("/canciones/buscarTodosPorIdDisco"))
+                                || (ruta.contains("/canciones/buscarPorId"))
+                                || (ruta.contains("/canciones/buscarPorNombre")))
+                                && (tokenInterceptor.getRol().getNombre().equals("Cliente"))) {
+                            return;
+                        } else if ((ruta.contains("/sesiones/finalizar"))
+                                && ((tokenInterceptor.getRol().getNombre().equals("Administrador"))
+                                || (tokenInterceptor.getRol().getNombre().equals("Cliente")))) {
+                            return;
+                        } else {
+                            //---------------------Retornar excepcion wrapper.---------------------------------------
+                            requestContext.abortWith(Response
+                                    .status(Response.Status.UNAUTHORIZED)
+                                    .entity("TOKEN NO PERMITIDO PARA ESTA OPERACION")
+                                    .build()
+                                    //------------------------------------------------------------------------------------
+                            );
+                            return;
+                        }
+                    } catch (ResourceNotFoundException e) {
+                          requestContext.abortWith(Response      
+                            .status(Response.Status.NO_CONTENT)
+                                  .entity("Ese apodo no esta registrado en la base de datos")
+                                  .build()
+                          );
+                          return;
                     }
 
                 } catch (ExpiredJwtException e) {
-                    //---------------------Retornar excepcion wrapper.---------------------------------------
-                    requestContext.abortWith(Response
-                            .status(Response.Status.UNAUTHORIZED)
-                            .entity("TOKEN CADUCADO")
-                            .build()
-                    //------------------------------------------------------------------------------------
-                    );
-                    return;
+                       //---------------------Retornar excepcion wrapper.---------------------------------------
+                    objeto = new ExceptionWrapper("401", "UNAUTHORIZED", "TOKEN CADUCADO", urlExcepcion.getPath());
+                            requestContext.abortWith( Response
+                                    .status(Response.Status.UNAUTHORIZED)
+                                    .entity(objeto)
+                                    .build()
+                            );
+                                return;    
+                     //------------------------------------------------------------------------------------             
                 }
             } else {
                 //---------------------Retornar excepcion wrapper.---------------------------------------
-                requestContext.abortWith(Response
-                        .status(Response.Status.UNAUTHORIZED)
-                        .entity("TOKEN NO VALIDO")
-                        .build()
+                    objeto = new ExceptionWrapper("401", "UNAUTHORIZED", "TOKEN NO VALIDO.", urlExcepcion.getPath());
+                    Gson gson = new Gson();
+                            requestContext.abortWith( Response
+                                    .status(Response.Status.UNAUTHORIZED)
+                                    .entity(gson.toJson(objeto))
+                                    .build()
+                            );
+                                return;    
                 //------------------------------------------------------------------------------------
-                );
-                return;
+             
             }
 
         }
