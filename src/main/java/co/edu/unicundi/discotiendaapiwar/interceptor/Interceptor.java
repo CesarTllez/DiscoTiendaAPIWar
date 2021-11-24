@@ -75,7 +75,9 @@ public class Interceptor implements ContainerRequestFilter {
 
         //Rutas que no necesitan token.
         if ((ruta.contains("/sesiones/iniciar"))
-                || (ruta.contains("usuarios/registrar"))) {
+                || (ruta.contains("usuarios/registrar"))
+                || (ruta.contains("compras/buscarTodo"))
+                || (ruta.contains("compras/registrar"))) {
             return;
         }
 
