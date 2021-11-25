@@ -121,6 +121,7 @@ public class Interceptor implements ContainerRequestFilter {
                                 || (ruta.contains("/usuarios/buscarHistorialCompras"))
                                 || (ruta.contains("/usuarios/actualizar"))
                                 || (ruta.contains("/artistas/buscarTodos"))
+                                || (ruta.contains("/artistas/vistaBuscar"))
                                 || (ruta.contains("/artistas/buscarPorId"))
                                 || (ruta.contains("/discos/buscarTodos"))
                                 || (ruta.contains("/discos/buscarPorId"))
@@ -140,14 +141,15 @@ public class Interceptor implements ContainerRequestFilter {
                                 || (tokenInterceptor.getRol().getNombre().equals("Cliente")))) {
                             return;
                         } else {
-                            //---------------------Retornar excepcion wrapper.---------------------------------------
-                            requestContext.abortWith(Response
+                              //---------------------Retornar excepcion wrapper.---------------------------------------
+                    objeto = new ExceptionWrapper("401", "UNAUTHORIZED", "TOKEN NO PERMITIDO PARA ESTA OPERACION", urlExcepcion.getPath());
+                            requestContext.abortWith( Response
                                     .status(Response.Status.UNAUTHORIZED)
-                                    .entity("TOKEN NO PERMITIDO PARA ESTA OPERACION")
+                                    .entity(objeto)
                                     .build()
-                                    //------------------------------------------------------------------------------------
                             );
-                            return;
+                                return;    
+                     //------------------------------------------------------------------------------------  
                         }
                     } catch (ResourceNotFoundException e) {
                           requestContext.abortWith(Response      
