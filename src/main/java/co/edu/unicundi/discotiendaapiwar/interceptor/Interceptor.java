@@ -107,7 +107,6 @@ public class Interceptor implements ContainerRequestFilter {
                     if (((ruta.contains("/formatos/"))
                             || (ruta.contains("/artistas/"))
                             || (ruta.contains("/discos/"))
-                            || (ruta.contains("/discos/buscarTodosPorIdArtista"))
                             || (ruta.contains("/canciones/"))
                             || (ruta.contains("/usuarios/buscarTodos"))
                             || (ruta.contains("/usuarios/buscarPorId"))
@@ -120,6 +119,8 @@ public class Interceptor implements ContainerRequestFilter {
                                 || (ruta.contains("/usuarios/buscarPorApodo/"+tokenInterceptor.getSub()))
                                 || (ruta.contains("/usuarios/buscarHistorialCompras"))
                                 || (ruta.contains("/usuarios/actualizar"))
+                                || (ruta.contains("/usuarios/eliminarPorIdJPQL/"+this.servicioUsuario.buscarPorApodo (
+                                tokenInterceptor.getSub()).getId()))
                                 || (ruta.contains("/artistas/buscarTodos"))
                                 || (ruta.contains("/artistas/vistaBuscar"))
                                 || (ruta.contains("/artistas/buscarPorId"))
