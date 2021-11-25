@@ -72,6 +72,15 @@ public class ArtistaControlador {
                 .build();
     }
     
+    @GET
+    @Path("/vistaBuscar")
+    public Response vistaBuscar(){
+        return Response
+                .status(Response.Status.OK)
+                .entity(this.servicio.vistaBuscar())
+                .build();
+    }
+    
     /**
      * Método POST que permite registrar a un artista.
      * @param artista
