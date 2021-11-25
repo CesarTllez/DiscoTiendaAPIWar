@@ -8,7 +8,6 @@ package co.edu.unicundi.discotiendaapiwar.interceptor;
 import co.edu.unicundi.discotiendaapiwar.excepciones.ExceptionWrapper;
 import co.edu.unicundi.discotiendaejbjar.dto.TokenInterceptor;
 import co.edu.unicundi.discotiendaejbjar.excepciones.ResourceNotFoundException;
-import co.edu.unicundi.discotiendaejbjar.excepciones.UnauthorizedException;
 import co.edu.unicundi.discotiendaejbjar.servicio.ITokenServicio;
 import co.edu.unicundi.discotiendaejbjar.servicio.IUsuarioServicio;
 import com.google.gson.Gson;
@@ -16,8 +15,6 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
@@ -75,7 +72,9 @@ public class Interceptor implements ContainerRequestFilter {
 
         //Rutas que no necesitan token.
         if ((ruta.contains("/sesiones/iniciar"))
-                || (ruta.contains("usuarios/registrar"))) {
+                || (ruta.contains("usuarios/registrar"))
+                || (ruta.contains("compras/buscarTodo"))
+                || (ruta.contains("compras/registrar"))) {
             return;
         }
 
@@ -107,14 +106,17 @@ public class Interceptor implements ContainerRequestFilter {
                     //Filtrar servicios de acuerdo con el rol que les correspondan.
                     if (((ruta.contains("/artistas/"))
                             || (ruta.contains("/discos/"))
+                            || (ruta.contains("/discos/buscarTodosPorIdArtista"))
                             || (ruta.contains("/canciones/"))
                             || (ruta.contains("/usuarios/buscarTodos"))
-                            || (ruta.contains("/usuarios/buscarPorId")))
+                            || (ruta.contains("/usuarios/buscarPorId"))
+                            || (ruta.contains("/usuarios/buscarPorApodo")))
                             && (tokenInterceptor.getRol().getNombre().equals("Administrador"))) {
                         return;
                     } else try {
                         if (((ruta.contains("/usuarios/buscarPorId/"+this.servicioUsuario.buscarPorApodo (
                                 tokenInterceptor.getSub()).getId()))
+                                || (ruta.contains("/usuarios/buscarPorApodo/"+tokenInterceptor.getSub()))
                                 || (ruta.contains("/usuarios/actualizar"))
                                 || (ruta.contains("/artistas/buscarTodos"))
                                 || (ruta.contains("/artistas/vistaBuscar"))
@@ -122,10 +124,12 @@ public class Interceptor implements ContainerRequestFilter {
                                 || (ruta.contains("/discos/buscarTodos"))
                                 || (ruta.contains("/discos/buscarPorId"))
                                 || (ruta.contains("/discos/buscarPorNombre"))
+                                || (ruta.contains("/discos/comprar"))
                                 || (ruta.contains("/canciones/buscarTodos"))
                                 || (ruta.contains("/canciones/buscarTodosPorIdDisco"))
                                 || (ruta.contains("/canciones/buscarPorId"))
-                                || (ruta.contains("/canciones/buscarPorNombre")))
+                                || (ruta.contains("/canciones/buscarPorNombre"))
+                                || (ruta.contains("/canciones/comprar")))
                                 && (tokenInterceptor.getRol().getNombre().equals("Cliente"))) {
                             return;
                         } else if ((ruta.contains("/sesiones/finalizar"))

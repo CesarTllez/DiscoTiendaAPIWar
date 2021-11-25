@@ -88,6 +88,20 @@ public class UsuarioControlador {
     }
     
     /**
+     * Método GET que permite buscar a un usuario por apodo.
+     * @param apodo
+     * @return Response
+     */
+    @GET
+    @Path("/buscarPorApodo/{apodo}")
+    public Response buscarPorApodo(@Valid @PathParam("apodo") String apodo)throws ResourceNotFoundException{
+        return Response
+                .status(Response.Status.OK)
+                .entity(this.servicio.buscarPorApodo(apodo))
+                .build();
+    }
+    
+    /**
      * Método GET que permite buscar a todos los usuarios.
      * @return Response
      */

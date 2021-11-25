@@ -5,6 +5,7 @@
  */
 package co.edu.unicundi.discotiendaapiwar.controlador;
 
+import co.edu.unicundi.discotiendaejbjar.dto.CompraDto;
 import co.edu.unicundi.discotiendaejbjar.entidad.Disco;
 import co.edu.unicundi.discotiendaejbjar.excepciones.EntityValidationException;
 import co.edu.unicundi.discotiendaejbjar.excepciones.ResourceConflictException;
@@ -17,6 +18,7 @@ import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -84,6 +86,20 @@ public class DiscoController {
                 .entity(this.servicio.buscarTodo())
                 .build();
     }
+    
+    /**
+     * Método GET que permite buscar todos los discos por id del artista.
+     * @param idArtista
+     * @return 
+     */
+    @GET
+    @Path("/buscarTodosPorIdArtista/{idArtista}")
+    public Response buscarTodosPorIdArtista(@PathParam("idArtista") Integer idArtista) {
+        return Response
+                .status(Response.Status.OK)
+                .entity(this.servicio.buscarTodosPorIdArtista(idArtista))
+                .build();
+    }
  
     /**
      * Método POST que permite registrar un disco.
@@ -138,6 +154,21 @@ public class DiscoController {
         this.servicio.eliminarSQL(id);
         return Response
                 .status(Response.Status.NO_CONTENT)
+                .build();
+    }
+    
+    /**
+     * Método POST que permite registrar la compra de un disco.
+     * @param idDisco
+     * @param token
+     * @return Response
+     */
+    @POST
+    @Path("/comprar")
+    public Response actualizar(CompraDto idDisco, @HeaderParam("Authorization") String token)throws ResourceNotFoundException, EntityValidationException,ResourceConflictException, UnauthorizedException{
+        this.servicio.registrarCompra(idDisco, token);
+        return Response
+                .status(Response.Status.OK)
                 .build();
     }
 
