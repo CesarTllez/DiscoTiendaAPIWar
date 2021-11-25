@@ -104,19 +104,21 @@ public class Interceptor implements ContainerRequestFilter {
                             TokenInterceptor.class);
 
                     //Filtrar servicios de acuerdo con el rol que les correspondan.
-                    if (((ruta.contains("/artistas/"))
+                    if (((ruta.contains("/formatos/"))
+                            || (ruta.contains("/artistas/"))
                             || (ruta.contains("/discos/"))
                             || (ruta.contains("/discos/buscarTodosPorIdArtista"))
                             || (ruta.contains("/canciones/"))
                             || (ruta.contains("/usuarios/buscarTodos"))
                             || (ruta.contains("/usuarios/buscarPorId"))
                             || (ruta.contains("/usuarios/buscarPorApodo")))
-                            && (tokenInterceptor.getRol().getNombre().equals("Administrador"))) {
+                            && (tokenInterceptor.getRol().getNombre().equalsIgnoreCase("Administrador"))) {
                         return;
                     } else try {
                         if (((ruta.contains("/usuarios/buscarPorId/"+this.servicioUsuario.buscarPorApodo (
                                 tokenInterceptor.getSub()).getId()))
                                 || (ruta.contains("/usuarios/buscarPorApodo/"+tokenInterceptor.getSub()))
+                                || (ruta.contains("/usuarios/buscarHistorialCompras"))
                                 || (ruta.contains("/usuarios/actualizar"))
                                 || (ruta.contains("/artistas/buscarTodos"))
                                 || (ruta.contains("/artistas/buscarPorId"))
@@ -128,8 +130,10 @@ public class Interceptor implements ContainerRequestFilter {
                                 || (ruta.contains("/canciones/buscarTodosPorIdDisco"))
                                 || (ruta.contains("/canciones/buscarPorId"))
                                 || (ruta.contains("/canciones/buscarPorNombre"))
-                                || (ruta.contains("/canciones/comprar")))
-                                && (tokenInterceptor.getRol().getNombre().equals("Cliente"))) {
+                                || (ruta.contains("/canciones/comprar"))
+                                || (ruta.contains("/formatos/buscarPorId"))
+                                || (ruta.contains("/formatos/buscarTodos")))
+                                && (tokenInterceptor.getRol().getNombre().equalsIgnoreCase("Cliente"))) {
                             return;
                         } else if ((ruta.contains("/sesiones/finalizar"))
                                 && ((tokenInterceptor.getRol().getNombre().equals("Administrador"))
