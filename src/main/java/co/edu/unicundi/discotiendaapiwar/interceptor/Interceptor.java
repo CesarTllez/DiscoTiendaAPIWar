@@ -123,10 +123,12 @@ public class Interceptor implements ContainerRequestFilter {
                                 || (ruta.contains("/discos/buscarTodos"))
                                 || (ruta.contains("/discos/buscarPorId"))
                                 || (ruta.contains("/discos/buscarPorNombre"))
+                                || (ruta.contains("/discos/comprar"))
                                 || (ruta.contains("/canciones/buscarTodos"))
                                 || (ruta.contains("/canciones/buscarTodosPorIdDisco"))
                                 || (ruta.contains("/canciones/buscarPorId"))
-                                || (ruta.contains("/canciones/buscarPorNombre")))
+                                || (ruta.contains("/canciones/buscarPorNombre"))
+                                || (ruta.contains("/canciones/comprar")))
                                 && (tokenInterceptor.getRol().getNombre().equals("Cliente"))) {
                             return;
                         } else if ((ruta.contains("/sesiones/finalizar"))
