@@ -170,7 +170,7 @@ public class CancionControlador {
     
     /**
      * Método POST que permite registrar la compra de una canción.
-     * @param idDisco
+     * @param idCancion
      * @param token
      * @return Response
      */
