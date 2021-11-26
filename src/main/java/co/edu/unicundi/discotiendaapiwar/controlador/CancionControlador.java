@@ -176,8 +176,8 @@ public class CancionControlador {
      */
     @POST
     @Path("/comprar")
-    public Response actualizar(CompraDto idDisco, @HeaderParam("Authorization") String token)throws ResourceNotFoundException, EntityValidationException,ResourceConflictException, UnauthorizedException{
-        this.servicio.registrarCompra(idDisco, token);
+    public Response comprar(CompraDto idCancion, @HeaderParam("Authorization") String token)throws ResourceNotFoundException, EntityValidationException,ResourceConflictException, UnauthorizedException{
+        this.servicio.registrarCompra(idCancion, token);
         return Response
                 .status(Response.Status.OK)
                 .build();
