@@ -115,16 +115,30 @@ public class UsuarioControlador {
     }
     
     /**
-     * Método GET que permite buscar el historial de compras.
+     * Método GET que permite buscar el historial de las canciones compradas.
      * @param token
      * @return Response
      */
     @GET
-    @Path("/buscarHistorialCompras")
-    public Response buscarHistorialCompras(@HeaderParam("Authorization") String token){
+    @Path("/buscarHistorialCompras/canciones")
+    public Response buscarHistorialComprasCanciones(@HeaderParam("Authorization") String token){
         return Response
                 .status(Response.Status.OK)
-                .entity(this.servicio.mostrarCompras(token))
+                .entity(this.servicio.mostrarComprasCanciones(token))
+                .build();
+    }
+    
+    /**
+     * Método GET que permite buscar el historial de los discos comprados.
+     * @param token
+     * @return Response
+     */
+    @GET
+    @Path("/buscarHistorialCompras/discos")
+    public Response buscarHistorialComprasDiscos(@HeaderParam("Authorization") String token){
+        return Response
+                .status(Response.Status.OK)
+                .entity(this.servicio.mostrarComprasDiscos(token))
                 .build();
     }
     
