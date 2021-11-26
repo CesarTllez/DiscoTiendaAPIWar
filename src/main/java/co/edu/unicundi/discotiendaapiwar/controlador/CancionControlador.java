@@ -62,6 +62,15 @@ public class CancionControlador {
                 .build();
     }
     
+    @GET
+    @Path("/historialVentaCancion")
+    public Response historialVentaCancion(){
+        return Response
+                .status(Response.Status.OK)
+                .entity(this.servicio.historialVentaCancion())
+                .build();
+    }
+   
     /**
      * Método GET que permite buscar una canción por nombre.
      * @param nombre

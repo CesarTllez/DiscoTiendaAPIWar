@@ -87,6 +87,15 @@ public class DiscoController {
                 .build();
     }
     
+    @GET
+    @Path("/historialVentaDisco")
+    public Response historialVentaDisco(){
+        return Response
+                .status(Response.Status.OK)
+                .entity(this.servicio.historialVentaDisco())
+                .build();
+    }
+    
     /**
      * Método GET que permite buscar todos los discos por id del artista.
      * @param idArtista
