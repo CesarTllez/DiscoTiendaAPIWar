@@ -27,7 +27,6 @@ import javax.xml.bind.DatatypeConverter;
 
 /**
  * Clase que permite filtrar que rol puede o no consumir cada servicio.
- *
  * @author César Rodríguez
  * @author Eison Morales
  * @author Juan Páez
@@ -36,7 +35,7 @@ import javax.xml.bind.DatatypeConverter;
 @Provider
 @PreMatching
 public class Interceptor implements ContainerRequestFilter {
-       
+
     @Context
     private UriInfo urlExcepcion;
     ExceptionWrapper objeto = new ExceptionWrapper();
@@ -45,7 +44,7 @@ public class Interceptor implements ContainerRequestFilter {
      */
     @EJB
     private ITokenServicio servicio;
-    
+
     /**
      * Permite la conexión con el EJB para adquirir los servicios.
      */
@@ -54,7 +53,6 @@ public class Interceptor implements ContainerRequestFilter {
 
     /**
      * Método que filtra las peticiones.
-     *
      * @param requestContext
      * @throws IOException
      */
@@ -72,23 +70,19 @@ public class Interceptor implements ContainerRequestFilter {
 
         //Rutas que no necesitan token.
         if ((ruta.contains("/sesiones/iniciar"))
-                || (ruta.contains("usuarios/registrar"))
-                || (ruta.contains("compras/buscarTodo"))
-                || (ruta.contains("compras/registrar"))) {
+                || (ruta.contains("usuarios/registrar"))) {
             return;
         }
 
         //Validar si se envió token o no en la petición..
         if (token == null) {
-            //---------------------Retornar excepcion wrapper.---------------------------------------
-           objeto = new ExceptionWrapper("401", "UNAUTHORIZED", "TOKEN NO VALIDO.", urlExcepcion.getPath());
-                            requestContext.abortWith( Response
-                                    .status(Response.Status.UNAUTHORIZED)
-                                    .entity(objeto)
-                                    .build()
-                            );
-                                return;    
-          //------------------------------------------------------------------------------------------
+            objeto = new ExceptionWrapper("401", "Unauthorized", "No se envio un token.", urlExcepcion.getPath());
+            requestContext.abortWith(Response
+                    .status(Response.Status.UNAUTHORIZED)
+                    .entity(objeto)
+                    .build()
+            );
+            return;
         } else {
             //Validar si existe token en la base de datos.
             if (this.servicio.validarExistenciaPorContenido(token) == 1) {
@@ -97,10 +91,10 @@ public class Interceptor implements ContainerRequestFilter {
                     Claims claims = Jwts.parser()
                             .setSigningKey(DatatypeConverter.parseBase64Binary(llaveToken))
                             .parseClaimsJws(token).getBody();
-                    
+
                     //Volviendo claims a tipo gson para transferir la información a dto.
                     Gson gson = new Gson();
-                    TokenInterceptor tokenInterceptor = gson.fromJson(gson.toJson(claims), 
+                    TokenInterceptor tokenInterceptor = gson.fromJson(gson.toJson(claims),
                             TokenInterceptor.class);
 
                     //Filtrar servicios de acuerdo con el rol que les correspondan.
@@ -114,13 +108,13 @@ public class Interceptor implements ContainerRequestFilter {
                             && (tokenInterceptor.getRol().getNombre().equalsIgnoreCase("Administrador"))) {
                         return;
                     } else try {
-                        if (((ruta.contains("/usuarios/buscarPorId/"+this.servicioUsuario.buscarPorApodo (
+                        if (((ruta.contains("/usuarios/buscarPorId/" + this.servicioUsuario.buscarPorApodo(
                                 tokenInterceptor.getSub()).getId()))
-                                || (ruta.contains("/usuarios/buscarPorApodo/"+tokenInterceptor.getSub()))
+                                || (ruta.contains("/usuarios/buscarPorApodo/" + tokenInterceptor.getSub()))
                                 || (ruta.contains("/usuarios/buscarHistorialCompras"))
                                 || (ruta.contains("/usuarios/actualizar"))
-                                || (ruta.contains("/usuarios/eliminarPorIdJPQL/"+this.servicioUsuario.buscarPorApodo (
-                                tokenInterceptor.getSub()).getId()))
+                                || (ruta.contains("/usuarios/eliminarPorIdJPQL/" + this.servicioUsuario.buscarPorApodo(
+                                        tokenInterceptor.getSub()).getId()))
                                 || (ruta.contains("/artistas/buscarTodos"))
                                 || (ruta.contains("/artistas/vistaBuscar"))
                                 || (ruta.contains("/artistas/buscarPorId"))
@@ -144,48 +138,42 @@ public class Interceptor implements ContainerRequestFilter {
                                 || (tokenInterceptor.getRol().getNombre().equals("Cliente")))) {
                             return;
                         } else {
-                              //---------------------Retornar excepcion wrapper.---------------------------------------
-                    objeto = new ExceptionWrapper("401", "UNAUTHORIZED", "TOKEN NO PERMITIDO PARA ESTA OPERACION", urlExcepcion.getPath());
-                            requestContext.abortWith( Response
+                            objeto = new ExceptionWrapper("401", "Unauthorized", "Token no permitido para esta operacion.", urlExcepcion.getPath());
+                            requestContext.abortWith(Response
                                     .status(Response.Status.UNAUTHORIZED)
                                     .entity(objeto)
                                     .build()
                             );
-                                return;    
-                     //------------------------------------------------------------------------------------  
+                            return;
                         }
                     } catch (ResourceNotFoundException e) {
-                          requestContext.abortWith(Response      
-                            .status(Response.Status.NO_CONTENT)
-                                  .entity("Ese apodo no esta registrado en la base de datos")
-                                  .build()
-                          );
-                          return;
+                        objeto = new ExceptionWrapper("404", "Not_Found", "Ese apodo no esta registrado en la base de datos", urlExcepcion.getPath());
+                            requestContext.abortWith(Response
+                                    .status(Response.Status.NOT_FOUND)
+                                    .entity(objeto)
+                                    .build()
+                            );
+                        return;
                     }
 
                 } catch (ExpiredJwtException e) {
-                       //---------------------Retornar excepcion wrapper.---------------------------------------
-                    objeto = new ExceptionWrapper("401", "UNAUTHORIZED", "TOKEN CADUCADO", urlExcepcion.getPath());
-                            requestContext.abortWith( Response
-                                    .status(Response.Status.UNAUTHORIZED)
-                                    .entity(objeto)
-                                    .build()
-                            );
-                                return;    
-                     //------------------------------------------------------------------------------------             
+                    objeto = new ExceptionWrapper("401", "Unauthorized", "Token caducado", urlExcepcion.getPath());
+                    requestContext.abortWith(Response
+                            .status(Response.Status.UNAUTHORIZED)
+                            .entity(objeto)
+                            .build()
+                    );
+                    return;
                 }
             } else {
-                //---------------------Retornar excepcion wrapper.---------------------------------------
-                    objeto = new ExceptionWrapper("401", "UNAUTHORIZED", "TOKEN NO VALIDO.", urlExcepcion.getPath());
-                    Gson gson = new Gson();
-                            requestContext.abortWith( Response
-                                    .status(Response.Status.UNAUTHORIZED)
-                                    .entity(gson.toJson(objeto))
-                                    .build()
-                            );
-                                return;    
-                //------------------------------------------------------------------------------------
-             
+                objeto = new ExceptionWrapper("401", "Unauthorized", "Token no valido.", urlExcepcion.getPath());
+                requestContext.abortWith(Response
+                        .status(Response.Status.UNAUTHORIZED)
+                        .entity(objeto)
+                        .build()
+                );
+                return;
+
             }
 
         }
